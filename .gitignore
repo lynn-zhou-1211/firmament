@@ -4,3 +4,7 @@
 *.class
 *Test.java
 **/test/
+
+
+/id_github_firmament
+/id_github_firmament.pub
