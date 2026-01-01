@@ -49,4 +49,13 @@
         </if>
         order by sort asc,create_time desc
     </select>
+
+    <delete id="deleteById">
+        delete from category where id = #{id}
+    </delete>
+
+    <insert id="insert" useGeneratedKeys="true"  keyProperty="id">
+        insert into category(name, type, sort, status, create_time, create_user, update_time, update_user)
+        values (#{name}, #{type}, #{sort}, #{status}, #{createTime}, #{createUser}, #{updateTime}, #{updateUser})
+    </insert>
 </mapper>

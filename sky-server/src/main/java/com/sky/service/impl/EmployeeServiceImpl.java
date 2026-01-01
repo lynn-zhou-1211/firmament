@@ -16,7 +16,6 @@ import com.sky.exception.PasswordErrorException;
 import com.sky.mapper.EmployeeMapper;
 import com.sky.result.PageResult;
 import com.sky.service.EmployeeService;
-import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.DigestUtils;
@@ -76,14 +75,9 @@ public class EmployeeServiceImpl implements EmployeeService {
                 .sex(employeeDTO.getSex())
                 .idNumber(employeeDTO.getIdNumber())
                 .status(StatusConstant.ENABLE)
-                .createTime(LocalDateTime.now())
-                .updateTime(LocalDateTime.now())
-                // 当前登录用户的id
-                .createUser(BaseContext.getCurrentId())
-                .updateUser(BaseContext.getCurrentId())
                 .build();
 
-        employeeMapper.insertSelective(employee);
+        employeeMapper.insert(employee);
     }
 
     @Override
@@ -105,7 +99,7 @@ public class EmployeeServiceImpl implements EmployeeService {
                 .id(id)
                 .status(status)
                 .build();
-        employeeMapper.updateById(employee);
+        employeeMapper.update(employee);
     }
 
     @Override
@@ -124,9 +118,7 @@ public class EmployeeServiceImpl implements EmployeeService {
                 .phone(employeeDTO.getPhone())
                 .sex(employeeDTO.getSex())
                 .idNumber(employeeDTO.getIdNumber())
-                .updateTime(LocalDateTime.now())
-                .updateUser(BaseContext.getCurrentId())
                 .build();
-        employeeMapper.updateById(employee);
+        employeeMapper.update(employee);
     }
 }
