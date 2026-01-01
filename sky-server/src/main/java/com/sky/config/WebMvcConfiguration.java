@@ -4,6 +4,7 @@ import com.sky.interceptor.JwtTokenAdminInterceptor;
 import com.sky.json.JacksonObjectMapper;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.converter.HttpMessageConverter;
@@ -30,6 +31,9 @@ public class WebMvcConfiguration extends WebMvcConfigurationSupport {
     @Autowired
     private JwtTokenAdminInterceptor jwtTokenAdminInterceptor;
 
+    @Value("${sky.path.upload-dir}")
+    private String uploadDir;
+
     /**
      * 注册自定义拦截器
      *
@@ -44,6 +48,7 @@ public class WebMvcConfiguration extends WebMvcConfigurationSupport {
 
     /**
      * 通过knife4j生成接口文档
+     *
      * @return docket
      */
     @Bean
@@ -63,11 +68,20 @@ public class WebMvcConfiguration extends WebMvcConfigurationSupport {
 
     /**
      * 设置静态资源映射
+     *
      * @param registry registry
      */
     protected void addResourceHandlers(ResourceHandlerRegistry registry) {
+        // 映射 Swagger 文档
         registry.addResourceHandler("/doc.html").addResourceLocations("classpath:/META-INF/resources/");
         registry.addResourceHandler("/webjars/**").addResourceLocations("classpath:/META-INF/resources/webjars/");
+
+        // 映射本地上传的文件
+        // 含义：当访问 http://localhost:8080/images/xxx.jpg 时
+        // 映射到本地磁盘：/Users/lynnzhou/Firmament/images
+        // 注意：file: 是必须加的前缀
+        registry.addResourceHandler("/images/**")
+                .addResourceLocations("file" + uploadDir);
     }
 
     /**
