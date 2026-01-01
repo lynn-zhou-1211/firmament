@@ -19,5 +19,7 @@ public interface EmployeeMapper {
 
     int updateById(Employee employee);
 
+    Employee selectById(@Param("id")Long id);
+
 
 }
