@@ -66,11 +66,6 @@ public class EmployeeController {
         return Result.success(employeeLoginVO);
     }
 
-    /**
-     * 退出
-     *
-     * @return
-     */
     @PostMapping("/logout")
     @ApiOperation(value = "Employee logout")
     public Result<String> logout() {
@@ -91,5 +86,13 @@ public class EmployeeController {
         log.info("Employee page query", employeePageQueryDTO);
         PageResult pageResult = employeeService.page(employeePageQueryDTO);
         return Result.success(pageResult);
+    }
+
+    @PostMapping("/status/{status}")
+    @ApiOperation("Employee status update")
+    public Result startOrStop(@PathVariable Integer status, Long id) {
+        log.info("启用禁用员工账号：{},{}", status, id);
+        employeeService.startOrStop(status, id);
+        return Result.success();
     }
 }
