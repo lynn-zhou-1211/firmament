@@ -10,7 +10,6 @@ import org.apache.ibatis.annotations.Mapper;
 @Mapper
 public interface DishFlavorMapper {
 
-    @AutoFill(value = OperationType.INSERT)
     int insertList(@Param("list")List<DishFlavor> list);
 
     int deleteByDishIds(@Param("dishIds")List<Long> dishId);

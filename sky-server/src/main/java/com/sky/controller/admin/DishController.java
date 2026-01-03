@@ -25,6 +25,7 @@ public class DishController {
     @PostMapping
     @ApiOperation("Dish create")
     public Result save(@RequestBody DishDTO dishDTO) {
+        log.info("新增菜品:{}",dishDTO);
         dishService.saveWithFlavor(dishDTO);
         return Result.success();
     }
@@ -32,6 +33,7 @@ public class DishController {
     @GetMapping("/page")
     @ApiOperation("Dish Page Query")
     public Result<PageResult> page(DishPageQueryDTO dishPageQueryDTO) {
+        log.info("查询菜品：{}",dishPageQueryDTO);
         PageResult pageResult = dishService.pageQuery(dishPageQueryDTO);
         return Result.success(pageResult);
     }
@@ -39,6 +41,7 @@ public class DishController {
     @DeleteMapping
     @ApiOperation("Dish batch delete")
     public Result delete(@RequestParam List<Long> ids){
+        log.info("批量删除菜品：{}",ids);
         dishService.deleteBatch(ids);
         return Result.success();
     }
