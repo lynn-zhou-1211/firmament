@@ -77,7 +77,6 @@ public class DishController {
         log.info("根据分类 id 查询菜品：{}",categoryId);
         List<Dish> dishes = dishService.queryByCategoryId(categoryId);
         return Result.success(dishes);
-
     }
 
 }

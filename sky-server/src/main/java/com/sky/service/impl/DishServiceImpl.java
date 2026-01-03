@@ -87,7 +87,7 @@ public class DishServiceImpl implements DishService {
         // 判断能否删除
         // 1. 是否存在起售中的
         for (Long id : ids) {
-            Integer status = dishMapper.selectById(id).getStatus();
+            Integer status = dishMapper.queryById(id).getStatus();
             if (status == StatusConstant.ENABLE) {
                 throw new DeletionNotAllowedException(MessageConstant.DISH_ON_SALE);
             }
@@ -106,7 +106,7 @@ public class DishServiceImpl implements DishService {
 
     @Override
     public DishVO queryByIdWithFlavor(Long id) {
-        Dish dish = dishMapper.selectById(id);
+        Dish dish = dishMapper.queryById(id);
         List<DishFlavor> flavors = dishFlavorMapper.queryByDishId(id);
 
         // 封装
@@ -167,6 +167,7 @@ public class DishServiceImpl implements DishService {
 
     @Override
     public List<Dish> queryByCategoryId(Long categoryId) {
+        // 只展示起售状态的菜品
         Dish dishes = Dish.builder()
                 .categoryId(categoryId)
                 .status(StatusConstant.ENABLE)

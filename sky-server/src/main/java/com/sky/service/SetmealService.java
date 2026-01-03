@@ -39,7 +39,12 @@ public interface SetmealService {
      * @param id
      * @param status
      */
-    void startOrStop(Integer id, Integer status);
+    void startOrStop(Long id, Integer status);
 
+    /**
+     * 查询套餐，带分类名和菜品
+     * @param id
+     * @return
+     */
     SetmealVO queryByIdWithCategoryNameAndSetmealDishes(Long id);
 }

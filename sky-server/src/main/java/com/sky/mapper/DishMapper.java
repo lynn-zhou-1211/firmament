@@ -10,9 +10,6 @@ import com.sky.vo.DishVO;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
-import org.apache.ibatis.annotations.Select;
-import org.springframework.beans.factory.annotation.Autowired;
-
 @Mapper
 public interface DishMapper {
 
@@ -23,7 +20,7 @@ public interface DishMapper {
 
     Page<DishVO> pageQuery(DishPageQueryDTO dishPageQueryDTO);
 
-    Dish selectById(Long id);
+    Dish queryById(Long id);
 
     void deleteByIds(@Param("ids") List<Long> ids);
 

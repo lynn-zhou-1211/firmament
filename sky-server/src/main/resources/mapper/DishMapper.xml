@@ -125,7 +125,7 @@
         order by d.create_time desc
     </select>
 
-    <select id="selectById" resultType="com.sky.entity.Dish">
+    <select id="queryById" resultType="com.sky.entity.Dish">
         select *
         from dish
         where id = #{id}

@@ -67,7 +67,7 @@ public class SetmealController {
 
     @PostMapping("/status/{status}")
     @ApiOperation("Setmeal stutus upsate")
-    public Result startOrStop(@PathVariable Integer status,@RequestParam Integer id){
+    public Result startOrStop(@PathVariable Integer status,@RequestParam Long id){
         log.info("修改套餐{}状态：{}",id,status);
         setmealService.startOrStop(id,status);
         return Result.success();
