@@ -68,4 +68,17 @@
         order by d.create_time desc
     </select>
 
+    <select id="selectById" resultType="com.sky.entity.Dish">
+        select * from dish
+        where id= #{id}
+    </select>
+
+    <delete id="deleteByIds">
+        delete
+        from dish
+        where id in
+        <foreach collection="ids" item="id" separator="," open="(" close=")">
+            #{id}
+        </foreach>
+    </delete>
 </mapper>

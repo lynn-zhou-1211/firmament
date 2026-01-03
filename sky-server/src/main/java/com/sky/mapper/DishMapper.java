@@ -23,6 +23,9 @@ public interface DishMapper {
 
     Page<DishVO> pageQuery(DishPageQueryDTO dishPageQueryDTO);
 
+    Dish selectById(Long id);
+
+    void deleteByIds(@Param("ids") List<Long> ids);
 
 
 
