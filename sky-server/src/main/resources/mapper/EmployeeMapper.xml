@@ -145,7 +145,7 @@
             <if test="idNumber != null and idNumber != ''">
                 id_number = #{idNumber},
             </if>
-            <if test="status != null and status != ''">
+            <if test="status != null">
                 status = #{status},
             </if>
             <if test="updateTime != null">

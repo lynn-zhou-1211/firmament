@@ -90,7 +90,7 @@ public class EmployeeController {
 
     @PutMapping("/status/{status}")
     @ApiOperation("Employee status update")
-    public Result startOrStop(@PathVariable Integer status, Long id) {
+    public Result startOrStop(@PathVariable Integer status,@RequestParam Long id) {
         log.info("Employee status update: {}, {}", status, id);
         employeeService.startOrStop(status, id);
         return Result.success();

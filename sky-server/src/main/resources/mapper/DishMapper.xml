@@ -2,7 +2,6 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.sky.mapper.DishMapper">
-
     <resultMap id="DishPageResultMap" type="com.sky.vo.DishVO">
         <id column="id" property="id"/>
         <result column="name" property="name"/>
@@ -20,57 +19,116 @@
     </resultMap>
 
     <sql id="Base_Column_List">
-        id, `name`, category_id, price, image, description, `status`, create_time, update_time, create_user, update_user
+        id,
+        `name`,
+        category_id,
+        price,
+        image,
+        description,
+        `status`,
+        create_time,
+        update_time,
+        create_user,
+        update_user
     </sql>
 
     <select id="countByCategoryId" resultType="java.lang.Long">
-        select count(id) from dish where category_id = #{categoryId}
+        select count(id)
+        from dish
+        where category_id = #{categoryId}
     </select>
 
     <insert id="insert" useGeneratedKeys="true" keyProperty="id">
         INSERT INTO dish
         <trim prefix="(" suffix=")" suffixOverrides=",">
-            <if test="name != null">`name`,</if>
-            <if test="categoryId != null">category_id,</if>
-            <if test="price != null">price,</if>
-            <if test="image != null">image,</if>
-            <if test="description != null">description,</if>
-            <if test="status != null">`status`,</if>
-            <if test="createTime != null">create_time,</if>
-            <if test="updateTime != null">update_time,</if>
-            <if test="createUser != null">create_user,</if>
-            <if test="updateUser != null">update_user</if>
+            <if test="name != null">
+                `name`,
+            </if>
+            <if test="categoryId != null">
+                category_id,
+            </if>
+            <if test="price != null">
+                price,
+            </if>
+            <if test="image != null">
+                image,
+            </if>
+            <if test="description != null">
+                description,
+            </if>
+            <if test="status != null">
+                `status`,
+            </if>
+            <if test="createTime != null">
+                create_time,
+            </if>
+            <if test="updateTime != null">
+                update_time,
+            </if>
+            <if test="createUser != null">
+                create_user,
+            </if>
+            <if test="updateUser != null">
+                update_user
+            </if>
         </trim>
         VALUES
         <trim prefix="(" suffix=")" suffixOverrides=",">
-            <if test="name != null">#{name},</if>
-            <if test="categoryId != null">#{categoryId},</if>
-            <if test="price != null">#{price},</if>
-            <if test="image != null">#{image},</if>
-            <if test="description != null">#{description},</if>
-            <if test="status != null">#{status},</if>
-            <if test="createTime != null">#{createTime},</if>
-            <if test="updateTime != null">#{updateTime},</if>
-            <if test="createUser != null">#{createUser},</if>
-            <if test="updateUser != null">#{updateUser}</if>
+            <if test="name != null">
+                #{name},
+            </if>
+            <if test="categoryId != null">
+                #{categoryId},
+            </if>
+            <if test="price != null">
+                #{price},
+            </if>
+            <if test="image != null">
+                #{image},
+            </if>
+            <if test="description != null">
+                #{description},
+            </if>
+            <if test="status != null">
+                #{status},
+            </if>
+            <if test="createTime != null">
+                #{createTime},
+            </if>
+            <if test="updateTime != null">
+                #{updateTime},
+            </if>
+            <if test="createUser != null">
+                #{createUser},
+            </if>
+            <if test="updateUser != null">
+                #{updateUser}
+            </if>
         </trim>
     </insert>
 
     <select id="pageQuery" resultMap="DishPageResultMap">
         select d.*, c.name as categoryName
         from dish d
-        left join category c on d.category_id = c.id
+                 left join category c on d.category_id = c.id
         <where>
-            <if test="name != null">and d.name like concat('%', #{name}, '%')</if>
-            <if test="categoryId != null">and d.category_id = #{categoryId}</if>
-            <if test="status != null">and d.status = #{status}</if>
+            <if test="name != null">
+                and d.name like concat('%', #{name}, '%')
+            </if>
+            <if test="categoryId != null">
+                and d.category_id = #{categoryId}
+            </if>
+            <if test="status != null">
+                and d.status = #{status}
+            </if>
         </where>
         order by d.create_time desc
     </select>
 
     <select id="selectById" resultType="com.sky.entity.Dish">
-        select * from dish
-        where id= #{id}
+        select *
+        from dish
+        where id = #{id}
     </select>
 
     <delete id="deleteByIds">
@@ -81,4 +139,35 @@
             #{id}
         </foreach>
     </delete>
+
+    <update id="update">
+        update dish
+        <set>
+            <if test="name != null">
+                name = #{name},
+            </if>
+            <if test="categoryId != null">
+                category_id = #{categoryId},
+            </if>
+            <if test="price != null">
+                price = #{price},
+            </if>
+            <if test="image != null">
+                image = #{image},
+            </if>
+            <if test="description != null">
+                description = #{description},
+            </if>
+            <if test="status != null">
+                status = #{status},
+            </if>
+            <if test="updateTime != null">
+                update_time = #{updateTime},
+            </if>
+            <if test="updateUser != null">
+                update_user = #{updateUser},
+            </if>
+        </set>
+        where id = #{id}
+    </update>
 </mapper>

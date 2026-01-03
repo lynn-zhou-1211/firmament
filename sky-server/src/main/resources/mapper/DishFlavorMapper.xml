@@ -35,4 +35,9 @@
             #{dishId}
         </foreach>
     </delete>
+
+    <select id="queryByDishId" resultMap="BaseResultMap">
+        select * from dish_flavor
+        where dish_id = #{dishId}
+    </select>
 </mapper>
