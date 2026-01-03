@@ -71,4 +71,9 @@
             #{setmealId}
         </foreach>
     </delete>
+
+    <select id="getBySetmealId" resultMap="BaseResultMap">
+        select * from setmeal_dish
+        where setmeal_id = #{setmealId}
+    </select>
 </mapper>

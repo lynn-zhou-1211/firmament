@@ -6,9 +6,11 @@ import com.sky.constant.MessageConstant;
 import com.sky.constant.StatusConstant;
 import com.sky.dto.SetmealDTO;
 import com.sky.dto.SetmealPageQueryDTO;
+import com.sky.entity.Dish;
 import com.sky.entity.Setmeal;
 import com.sky.entity.SetmealDish;
 import com.sky.exception.DeletionNotAllowedException;
+import com.sky.mapper.DishMapper;
 import com.sky.mapper.SetmealDishMapper;
 import com.sky.mapper.SetmealMapper;
 import com.sky.result.PageResult;
@@ -20,6 +22,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Arrays;
 import java.util.List;
 
 @Service
@@ -82,12 +85,42 @@ public class SetmealServiceImpl implements SetmealService {
     }
 
     @Override
-    public void update(SetmealDTO setmealDTO) {
+    public SetmealVO queryByIdWithCategoryNameAndSetmealDishes(Long id) {
+        // 查询单个套餐，带上套餐名
+        Setmeal setmeal = setmealMapper.getById(id);
+        SetmealVO setmealVO = new SetmealVO();
+        BeanUtils.copyProperties(setmeal,setmealVO);
 
+        // 查询套餐的 setmeal-dishes， 填充字段
+        setmealVO.setSetmealDishes(setmealDishMapper.getBySetmealId(id));
+        return setmealVO;
+    }
+
+    @Override
+    public void update(SetmealDTO setmealDTO) {
+        // 更新套餐
+        Setmeal setmeal = new Setmeal();
+        BeanUtils.copyProperties(setmealDTO,setmeal);
+        setmealMapper.update(setmeal);
+
+        // 批量删除 套餐-菜品
+        setmealDishMapper.deleteBatch(Arrays.asList(setmeal.getId()));
+        // 批量插入新的套餐-菜品
+        Long setmealId = setmeal.getId();
+        List<SetmealDish> dishes = setmealDTO.getSetmealDishes();
+        if (dishes != null && !dishes.isEmpty()) {
+            dishes.forEach(setmealDish -> {
+                setmealDish.setSetmealId(setmealId);
+            });
+
+            // 保存关联关系
+            setmealDishMapper.insertBatch(dishes);
+        }
     }
 
     @Override
     public void startOrStop(Integer id, Integer status) {
 
     }
+
 }

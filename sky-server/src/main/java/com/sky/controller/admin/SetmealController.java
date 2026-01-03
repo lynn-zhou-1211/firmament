@@ -5,6 +5,8 @@ import com.sky.dto.SetmealPageQueryDTO;
 import com.sky.result.PageResult;
 import com.sky.result.Result;
 import com.sky.service.SetmealService;
+import com.sky.vo.SetmealVO;
+import io.lettuce.core.api.push.PushListener;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.models.auth.In;
@@ -45,6 +47,14 @@ public class SetmealController {
         log.info("套餐批量删除：{}",ids);
         setmealService.deleteBatch(ids);
         return Result.success();
+    }
+
+    @GetMapping("/{id}")
+    @ApiOperation("Setmeal query by id")
+    public Result<SetmealVO> getById(@PathVariable Long id){
+        log.info("根据 id 查询套餐：{}",id);
+        SetmealVO setmealVO = setmealService.queryByIdWithCategoryNameAndSetmealDishes(id);
+        return Result.success(setmealVO);
     }
 
     @PutMapping("/{id}")

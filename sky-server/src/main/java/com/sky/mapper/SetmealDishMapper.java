@@ -13,4 +13,6 @@ public interface SetmealDishMapper {
 
     void deleteBatch(@Param("setMealIds") List<Long> setMealIds);
 
+    List<SetmealDish> getBySetmealId(Long setmealId);
+
 }
