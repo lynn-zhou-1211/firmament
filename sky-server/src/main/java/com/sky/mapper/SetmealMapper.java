@@ -40,7 +40,9 @@ public interface SetmealMapper {
 
     Page<SetmealVO> pageQueryWithCategoryName(SetmealPageQueryDTO setmealPageQueryDTO);
 
+    Setmeal getById(Long id);
 
+    void deleteBatch(@Param("ids") List<Long> ids);
 
 
 }

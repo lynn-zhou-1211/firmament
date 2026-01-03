@@ -41,7 +41,7 @@ public class SetmealController {
 
     @DeleteMapping
     @ApiOperation("Setmeal batch delete")
-    public Result delete(@RequestParam List<Integer> ids){
+    public Result delete(@RequestParam List<Long> ids){
         log.info("套餐批量删除：{}",ids);
         setmealService.deleteBatch(ids);
         return Result.success();

@@ -145,4 +145,16 @@
         </where>
         order by create_time desc
     </select>
+
+    <delete id="deleteBatch">
+        delete from dish
+        where id in
+        <foreach collection="ids" item="id" separator="," open="(" close=")">
+            #{id}
+        </foreach>
+    </delete>
+
+    <select id="getById" resultMap="BaseResultMap">
+        select * from setmeal where id=#{id}
+    </select>
 </mapper>
