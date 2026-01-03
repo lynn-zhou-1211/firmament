@@ -1,0 +1,74 @@
+package com.sky.service.impl;
+
+import com.sky.dto.SetmealDTO;
+import com.sky.dto.SetmealPageQueryDTO;
+import com.sky.entity.Setmeal;
+import com.sky.entity.SetmealDish;
+import com.sky.mapper.SetmealDishMapper;
+import com.sky.mapper.SetmealMapper;
+import com.sky.result.PageResult;
+import com.sky.service.SetmealService;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.BeanUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import java.util.List;
+
+@Service
+@Slf4j
+public class SetmealServiceImpl implements SetmealService {
+    @Autowired
+    SetmealDishMapper setmealDishMapper;
+
+    @Autowired
+    SetmealMapper setmealMapper;
+
+    @Override
+    public void saveSetmealWithDishes(SetmealDTO setmealDTO) {
+        // 套餐名称唯一
+        // 套餐必须属于某个分类
+        // 套餐必须包含菜品
+        // 名称、分类、价格、图片为必填项
+        // 添加菜品窗口需要根据分类类型来展示菜品
+        // 新增的套餐默认为停售状态
+
+        Setmeal setmeal = new Setmeal();
+        BeanUtils.copyProperties(setmealDTO, setmeal);
+        // 向套餐表插入数据
+        setmealMapper.insert(setmeal);
+
+        // 获取生成的套餐 id
+        Long setmealId = setmeal.getId();
+
+        List<SetmealDish> dishes = setmealDTO.getSetmealDishes();
+        if (dishes != null && !dishes.isEmpty()) {
+            dishes.forEach(setmealDish -> {
+                setmealDish.setSetmealId(setmealId);
+            });
+
+            // 保存关联关系
+            setmealDishMapper.insertBatch(dishes);
+        }
+    }
+
+    @Override
+    public PageResult pageQuery(SetmealPageQueryDTO setmealPageQueryDTO) {
+        return null;
+    }
+
+    @Override
+    public void deleteBatch(List<Integer> ids) {
+
+    }
+
+    @Override
+    public void update(SetmealDTO setmealDTO) {
+
+    }
+
+    @Override
+    public void startOrStop(Integer id, Integer status) {
+
+    }
+}
