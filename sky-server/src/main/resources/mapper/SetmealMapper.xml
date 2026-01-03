@@ -154,7 +154,8 @@
         </foreach>
     </delete>
 
-    <select id="getById" resultMap="BaseResultMap">
-        select * from setmeal where id=#{id}
+    <select id="getById">
+        select s.*,c.name as categoryName from setmeal s left join category c on s.category_id=c.id
+        where s.id=#{id}
     </select>
 </mapper>

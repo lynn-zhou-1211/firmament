@@ -87,9 +87,7 @@ public class SetmealServiceImpl implements SetmealService {
     @Override
     public SetmealVO queryByIdWithCategoryNameAndSetmealDishes(Long id) {
         // 查询单个套餐，带上套餐名
-        Setmeal setmeal = setmealMapper.getById(id);
-        SetmealVO setmealVO = new SetmealVO();
-        BeanUtils.copyProperties(setmeal,setmealVO);
+        SetmealVO setmealVO = setmealMapper.getById(id);
 
         // 查询套餐的 setmeal-dishes， 填充字段
         setmealVO.setSetmealDishes(setmealDishMapper.getBySetmealId(id));
