@@ -13,12 +13,13 @@ import com.sky.utils.HttpClientUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.ibatis.annotations.Mapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.Map;
 
-@Mapper
+@Service
 @Slf4j
 public class UserServiceImpl implements UserService {
 
