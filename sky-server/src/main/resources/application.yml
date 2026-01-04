@@ -46,9 +46,13 @@ sky:
     user-secret-key: lynn
     user-ttl: 864000000
     user-token-name: authentication
-
   path:
     upload-dir: /Users/lynnzhou/Firmament/images
+  alioss:
+    endpoint: ${sky.alioss.endpoint}
+    access-key-id: ${sky.alioss.access-key-id}
+    access-key-secret: ${sky.alioss.access-key-secret}
+    bucket-name: ${sky.alioss.bucket-name}
   wechat:
     appid: ${sky.wechat.appid}
     secret: ${sky.wechat.secret}
