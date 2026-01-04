@@ -18,7 +18,7 @@ import java.util.List;
 public interface SetmealMapper {
 
     /**
-     * 根据分类id查询套餐的数量
+     * 根据分类 id 查询套餐的数量
      * @param id
      * @return
      */
@@ -36,13 +36,32 @@ public interface SetmealMapper {
     @AutoFill(OperationType.UPDATE)
     void update(Setmeal setmeal);
 
+    /**
+     * 新增套餐
+     * @param setmeal
+     * @return
+     */
     @AutoFill(OperationType.INSERT)
     int insert(Setmeal setmeal);
 
+    /**
+     * 套餐分页查询
+     * @param setmealPageQueryDTO
+     * @return
+     */
     Page<SetmealVO> pageQueryWithCategoryName(SetmealPageQueryDTO setmealPageQueryDTO);
 
+    /**
+     * 根据 id 查询套餐
+     * @param id
+     * @return
+     */
     SetmealVO getById(Long id);
 
+    /**
+     * 批量删除套餐
+     * @param ids
+     */
     void deleteBatch(@Param("ids") List<Long> ids);
 
     /**
@@ -53,7 +72,7 @@ public interface SetmealMapper {
     List<Setmeal> list(Setmeal setmeal);
 
     /**
-     * 根据套餐id查询菜品选项
+     * 根据套餐 id 查询菜品选项
      * @param setmealId
      * @return
      */

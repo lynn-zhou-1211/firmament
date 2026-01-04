@@ -84,7 +84,6 @@ public class SetmealServiceImpl implements SetmealService {
             if (setmealMapper.getById(id).getStatus() == StatusConstant.ENABLE) {
                 throw new DeletionNotAllowedException(MessageConstant.SETMEAL_ON_SALE);
             }
-            ;
         });
         setmealMapper.deleteBatch(ids);
         setmealDishMapper.deleteBatch(ids);
@@ -129,8 +128,8 @@ public class SetmealServiceImpl implements SetmealService {
         if (status == StatusConstant.ENABLE) {
             List<SetmealDish> list = setmealDishMapper.getBySetmealId(id);
             for (SetmealDish setmealDish : list) {
-                Dish dish=  dishMapper.queryById(setmealDish.getDishId());
-                Integer dishStatus =dish.getStatus();
+                Dish dish = dishMapper.queryById(setmealDish.getDishId());
+                Integer dishStatus = dish.getStatus();
                 if (dishStatus == StatusConstant.DISABLE) {
                     throw new SetmealEnableFailedException(MessageConstant.SETMEAL_ENABLE_FAILED);
                 }
@@ -145,6 +144,7 @@ public class SetmealServiceImpl implements SetmealService {
 
     /**
      * 条件查询
+     *
      * @param setmeal
      * @return
      */
@@ -155,6 +155,7 @@ public class SetmealServiceImpl implements SetmealService {
 
     /**
      * 根据id查询菜品选项
+     *
      * @param id
      * @return
      */
