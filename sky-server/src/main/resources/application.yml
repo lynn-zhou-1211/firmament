@@ -35,12 +35,21 @@ logging:
 
 sky:
   jwt:
-    # 设置jwt签名加密时使用的秘钥
+    # 设置 jwt 签名加密时使用的秘钥
     admin-secret-key: itcast
-    # 设置jwt过期时间
-    admin-ttl: 86400000
+    # 设置 jwt 过期时间
+    admin-ttl: 864000000
     # 设置前端传递过来的令牌名称
     admin-token-name: token
+
+    # 用户端 jwt 设置
+    user-secret-key: lynn
+    user-ttl: 864000000
+    user-token-name: authentication
+
   path:
     upload-dir: /Users/lynnzhou/Firmament/images
+  wechat:
+    appid: ${sky.wechat.appid}
+    secret: ${sky.wechat.secret}
 
