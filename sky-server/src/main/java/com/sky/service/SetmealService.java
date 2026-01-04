@@ -62,5 +62,5 @@ public interface SetmealService {
      * @param id
      * @return
      */
-    List<DishItemVO> getDishItemById(Long id);
+    List<DishItemVO> queryDishItemById(Long id);
 }

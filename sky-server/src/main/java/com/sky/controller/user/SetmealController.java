@@ -47,7 +47,7 @@ public class SetmealController {
     @GetMapping("/dish/{id}")
     @ApiOperation("根据套餐id查询包含的菜品列表")
     public Result<List<DishItemVO>> dishList(@PathVariable("id") Long id) {
-        List<DishItemVO> list = setmealService.getDishItemById(id);
+        List<DishItemVO> list = setmealService.queryDishItemById(id);
         return Result.success(list);
     }
 }

@@ -14,7 +14,6 @@ import com.sky.vo.EmployeeLoginVO;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.poi.xdgf.util.VsdxToPng;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -100,7 +99,7 @@ public class EmployeeController {
     @ApiOperation("Employee detail query")
     public Result<Employee> getById(@PathVariable Long id) {
         log.info("Employee detail query: {}", id);
-        Employee employee = employeeService.getById(id);
+        Employee employee = employeeService.queryById(id);
         return Result.success(employee);
     }
 

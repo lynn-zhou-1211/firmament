@@ -1,9 +1,11 @@
 package com.sky.controller.user;
 
+import com.alibaba.fastjson.JSON;
 import com.sky.constant.StatusConstant;
 import com.sky.entity.Dish;
 import com.sky.result.Result;
 import com.sky.service.DishService;
+import com.sky.utils.RedisUtil;
 import com.sky.vo.DishVO;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -14,6 +16,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
+import java.util.Set;
 
 @RestController("userDishController")
 @RequestMapping("/user/dish")
@@ -25,6 +28,8 @@ public class DishController {
 
     @Autowired
     private RedisTemplate redisTemplate;
+    @Autowired
+    private RedisUtil redisUtil;
 
     /**
      * 根据分类id查询菜品
@@ -35,26 +40,25 @@ public class DishController {
     @GetMapping("/list")
     @ApiOperation("根据分类 id 查询菜品")
     public Result<List<DishVO>> list(Long categoryId) {
-        // 构造 redis 中的 key
-        String key = "dish_" +categoryId;
+        String key = "dish_" + categoryId;
 
-        // 查询 redis 中是否存在菜品数据
-        // 存在，则直接返回；
-        // 不存在，则查询后将数据放入redis
-        List<DishVO> list= (List<DishVO>) redisTemplate.opsForValue().get(key);
-        if(list!=null && !list.isEmpty()){
+        // 1. 查询 Redis
+        List<DishVO> list = redisUtil.getList(key, DishVO.class);
+        if(list!=null && list.size()>0){
+            log.info("查找到 Redis 缓存，key:{}", key);
             return Result.success(list);
         }
 
-        /////////////////////////////////////
+        // 2. 查询数据库
+        log.info("Redis 缓存不存在，查询数据库，key:{}", key);
         Dish dish = new Dish();
         dish.setCategoryId(categoryId);
         dish.setStatus(StatusConstant.ENABLE);
-
         list = dishService.listWithFlavor(dish);
-        /////////////////////////////////////
 
-        redisTemplate.opsForValue().set(key,list);
+        // 3. 缓存
+        redisUtil.set(key,list);
+
         return Result.success(list);
     }
 
