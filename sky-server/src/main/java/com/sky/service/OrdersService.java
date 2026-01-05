@@ -5,4 +5,6 @@ import com.sky.vo.OrderSubmitVO;
 
 public interface OrdersService {
     OrderSubmitVO submit(OrdersSubmitDTO ordersSubmitDTO);
+
+    void paySuccess(String orderNumber);
 }

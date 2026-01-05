@@ -107,4 +107,25 @@ public class OrdersServiceImpl implements OrdersService {
 
         return orderSubmitVO;
     }
+
+    @Override
+    public void paySuccess(String orderNumber) {
+        // 1. 根据订单号查订单
+        Long userId = BaseContext.getCurrentId();
+        Orders ordersDB = ordersMapper.getByNumberAndUserId(orderNumber, userId);
+
+        // 2. 修改订单状态
+        // 支付状态改为：已支付 (PAID)
+        Orders orders = Orders.builder()
+                .id(ordersDB.getId())
+                .status(Orders.TO_BE_CONFIRMED) // 状态变更为：待接单
+                .payStatus(Orders.PAID)         // 支付状态：已支付
+                .checkoutTime(LocalDateTime.now()) // 结账时间
+                .build();
+
+        // 3. 更新数据库
+        ordersMapper.update(orders);
+
+        // 4. 如果做了 WebSocket，这里通常需要通过 WebSocket 推送消息给商家：“您有新的订单！”
+    }
 }
