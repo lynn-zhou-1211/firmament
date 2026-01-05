@@ -1,6 +1,7 @@
 package com.sky.controller.user;
 
 import com.alibaba.fastjson.JSON;
+import com.sky.constant.RedisConstant;
 import com.sky.constant.StatusConstant;
 import com.sky.entity.Dish;
 import com.sky.result.Result;
@@ -41,7 +42,7 @@ public class DishController {
     @ApiOperation("根据分类 id 查询菜品")
     public Result<List<DishVO>> list(Long categoryId) {
         log.info("根据分类查询套餐列表：{}",categoryId);
-        String key = "dish_" + categoryId;
+        String key = RedisConstant.KEY_DISH_PREFIX + categoryId;
 
         // 1. 查询 Redis
         List<DishVO> list = redisUtil.getList(key, DishVO.class);

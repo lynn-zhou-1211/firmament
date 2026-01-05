@@ -1,6 +1,7 @@
 package com.sky.controller.user;
 
 import ch.qos.logback.classic.Logger;
+import com.sky.constant.RedisConstant;
 import com.sky.constant.StatusConstant;
 import com.sky.entity.Setmeal;
 import com.sky.result.Result;
@@ -40,7 +41,7 @@ public class SetmealController {
     public Result<List<Setmeal>> list(Long categoryId) {
         // 设置key，检索，如果查到了就return；如果没查到就查询并存储
         log.info("根据分类查询套餐列表：{}",categoryId);
-        String key = "setmeal_" + categoryId;
+        String key = RedisConstant.KEY_SETMEAL_PREFIX + categoryId;
         List<Setmeal> list = redisUtil.getList(key, Setmeal.class);
 
         if (list != null && !list.isEmpty()) {

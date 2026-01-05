@@ -1,5 +1,6 @@
 package com.sky.controller.admin;
 
+import com.sky.constant.RedisConstant;
 import com.sky.dto.SetmealDTO;
 import com.sky.dto.SetmealPageQueryDTO;
 import com.sky.result.PageResult;
@@ -34,7 +35,7 @@ public class SetmealController {
     public Result save(@RequestBody SetmealDTO setmealDTO) {
         log.info("新增菜品：{}", setmealDTO);
         setmealService.saveSetmealWithDishes(setmealDTO);
-        redisUtil.delete("setmeal_" + setmealDTO.getCategoryId());
+        redisUtil.delete(RedisConstant.KEY_SETMEAL_PREFIX+ setmealDTO.getCategoryId());
         return Result.success();
     }
 
@@ -51,7 +52,7 @@ public class SetmealController {
     public Result delete(@RequestParam List<Long> ids) {
         log.info("套餐批量删除：{}", ids);
         setmealService.deleteBatch(ids);
-        redisUtil.deleteByPattern("setmeal_*");
+        redisUtil.deleteByPattern(RedisConstant.PATTERN_DISH);
         return Result.success();
     }
 
@@ -68,7 +69,7 @@ public class SetmealController {
     public Result update(@RequestBody SetmealDTO setmealDTO) {
         log.info("套餐修改：{}", setmealDTO);
         setmealService.update(setmealDTO);
-        redisUtil.deleteByPattern("setmeal_*");
+        redisUtil.deleteByPattern(RedisConstant.PATTERN_DISH);
         return Result.success();
     }
 
@@ -77,7 +78,7 @@ public class SetmealController {
     public Result startOrStop(@PathVariable Integer status, @RequestParam Long id) {
         log.info("修改套餐{}状态：{}", id, status);
         setmealService.startOrStop(id, status);
-        redisUtil.deleteByPattern("setmeal_*");
+        redisUtil.deleteByPattern(RedisConstant.PATTERN_DISH);
         return Result.success();
     }
 

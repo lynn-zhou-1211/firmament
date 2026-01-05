@@ -1,5 +1,6 @@
 package com.sky.controller.admin;
 
+import com.sky.constant.RedisConstant;
 import com.sky.dto.DishDTO;
 import com.sky.dto.DishPageQueryDTO;
 import com.sky.entity.Dish;
@@ -35,7 +36,7 @@ public class DishController {
         dishService.saveWithFlavor(dishDTO);
 
         // 清理缓存数据
-        redisUtil.deleteByPattern("dish"+dishDTO.getId());
+        redisUtil.delete(RedisConstant.KEY_DISH_PREFIX +dishDTO.getId());
 
         return Result.success();
     }
@@ -55,7 +56,7 @@ public class DishController {
         dishService.deleteBatch(ids);
 
         // 清除所有 dish 相关缓存
-        redisUtil.deleteByPattern("dish_*");
+        redisUtil.deleteByPattern(RedisConstant.PATTERN_DISH);
 
         return Result.success();
     }
@@ -73,7 +74,7 @@ public class DishController {
     public Result update(@RequestBody DishDTO dishDTO){
         log.info("更新菜品：{}",dishDTO);
         dishService.updateWithFlavor(dishDTO);
-        redisUtil.deleteByPattern("dish_*");
+        redisUtil.deleteByPattern(RedisConstant.PATTERN_DISH);
         return Result.success();
     }
 
@@ -82,7 +83,7 @@ public class DishController {
     public Result<String> startOrStop(@PathVariable Integer status,@RequestParam Long id){
         log.info("菜品 {} 起售/停售：{}",id,status);
         dishService.startOrStop(id,status);
-        redisUtil.deleteByPattern("dish_*");
+        redisUtil.deleteByPattern(RedisConstant.PATTERN_DISH);
         return Result.success();
     }
 
