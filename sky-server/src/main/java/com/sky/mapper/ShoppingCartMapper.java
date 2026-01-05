@@ -11,13 +11,6 @@ import org.apache.ibatis.annotations.Mapper;
 @Mapper
 public interface ShoppingCartMapper {
     /**
-     * 根据 id 查询购物车条目
-     * @param id
-     * @return
-     */
-    ShoppingCart getById(@Param("id")Long id);
-
-    /**
      * 根据【用户id + 菜品/套餐id + 口味】查询购物车条目
      * @param shoppingCart
      * @return
@@ -37,6 +30,17 @@ public interface ShoppingCartMapper {
      * @return
      */
     void insert(ShoppingCart shoppingCart);
+
+    /**
+     * 根据 id 删除条目
+     * @param id
+     * @return
+     */
+    void delete(@Param("id")Long id);
+
+    void deleteByUserId(@Param("userId")Long userId);
+
+
 
 
 
