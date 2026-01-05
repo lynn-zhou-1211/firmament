@@ -15,5 +15,7 @@ public interface OrderDetailMapper {
      */
     int insertList(@Param("list")List<OrderDetail> list);
 
+    List<OrderDetail> getByOrderId(@Param("orderId")Long orderId);
+
 
 }

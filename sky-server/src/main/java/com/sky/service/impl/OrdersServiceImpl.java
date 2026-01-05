@@ -15,7 +15,9 @@ import com.sky.mapper.OrdersMapper;
 import com.sky.mapper.ShoppingCartMapper;
 import com.sky.service.OrdersService;
 import com.sky.utils.SnowflakeUtils;
+import com.sky.vo.OrderPaymentVO;
 import com.sky.vo.OrderSubmitVO;
+import com.sky.vo.OrderVO;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -109,7 +111,7 @@ public class OrdersServiceImpl implements OrdersService {
     }
 
     @Override
-    public void paySuccess(String orderNumber) {
+    public OrderPaymentVO paySuccess(String orderNumber) {
         // 1. 根据订单号查订单
         Long userId = BaseContext.getCurrentId();
         Orders ordersDB = ordersMapper.getByNumberAndUserId(orderNumber, userId);
@@ -126,6 +128,30 @@ public class OrdersServiceImpl implements OrdersService {
         // 3. 更新数据库
         ordersMapper.update(orders);
 
-        // 4. 如果做了 WebSocket，这里通常需要通过 WebSocket 推送消息给商家：“您有新的订单！”
+        // 4. 返回一个空的VO对象给前端，因为前端已经改了不处理签名，所以这里返回空即可
+        OrderPaymentVO vo = new OrderPaymentVO();
+        vo.setNonceStr("666");
+        vo.setPaySign("666");
+        vo.setPackageStr("prepay_id=wx");
+        vo.setSignType("RSA");
+        vo.setTimeStamp("10000000");
+
+        return vo;
+    }
+
+    @Override
+    public OrderVO details(Long id) {
+        // 1. 根据id查询订单
+        Orders orders = ordersMapper.getById(id);
+
+        // 2. 查询该订单对应的菜品/套餐明细
+        List<OrderDetail> orderDetailList = orderDetailMapper.getByOrderId(orders.getId());
+
+        // 3. 封装成VO返回
+        OrderVO orderVO = new OrderVO();
+        BeanUtils.copyProperties(orders, orderVO);
+        orderVO.setOrderDetailList(orderDetailList);
+
+        return orderVO;
     }
 }

@@ -29,6 +29,9 @@ public interface OrdersMapper {
     void update(@Param("updated")Orders updated);
 
 
+    Orders getById(@Param("id")Long id);
+
+
 
 
 }
