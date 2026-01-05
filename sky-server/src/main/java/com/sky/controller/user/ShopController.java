@@ -21,6 +21,6 @@ public class ShopController {
     @ApiOperation("Shop status query")
     public Result<Integer> getStatus() {
         Integer status = redisUtil.get(RedisConstant.KEY_SHOP_STATUS, Integer.class);
-        return Result.success(status == null ? 0 : status);
+        return Result.success(status == null ? 1 : status);
     }
 }

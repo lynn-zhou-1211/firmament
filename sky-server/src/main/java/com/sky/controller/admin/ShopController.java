@@ -10,7 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 @RestController("adminShopController")
-@Api(tags="Shop Module")
+@Api(tags = "Shop Module")
 @RequestMapping("/admin/shop")
 @Slf4j
 public class ShopController {
@@ -19,15 +19,19 @@ public class ShopController {
 
     @PutMapping("/{status}")
     @ApiOperation("Shop set status")
-    public Result setStatus(@PathVariable Integer status){
+    public Result setStatus(@PathVariable Integer status) {
         redisUtil.set(RedisConstant.KEY_SHOP_STATUS, status);
         return Result.success();
     }
 
     @GetMapping("/status")
     @ApiOperation("Shop status query")
-    public Result<Integer> getStatus(){
+    public Result<Integer> getStatus() {
         Integer status = redisUtil.get(RedisConstant.KEY_SHOP_STATUS, Integer.class);
-        return Result.success(status == null ? 0 : status);
+        if (status == null) {
+            status = 1;
+            redisUtil.set(RedisConstant.KEY_SHOP_STATUS, status);
+        }
+        return Result.success(status);
     }
 }
