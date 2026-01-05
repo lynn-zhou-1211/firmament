@@ -57,9 +57,9 @@ public class CategoryController {
      * @return
      */
     @DeleteMapping
-    @ApiOperation("Category delete")
+    @ApiOperation("Category deleteById")
     public Result<String> deleteById(Long id){
-        log.info("Category delete：{}", id);
+        log.info("Category deleteById：{}", id);
         categoryService.deleteById(id);
         return Result.success();
     }

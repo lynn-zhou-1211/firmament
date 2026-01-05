@@ -15,7 +15,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
-import java.util.Collections;
 import java.util.List;
 
 @Service
@@ -91,7 +90,7 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
                 item.setNumber(number - 1);
                 cartMapper.updateNumber(item);
             } else if (number == 1) {
-                cartMapper.delete(item.getId());
+                cartMapper.deleteById(item.getId());
             } else {
                 throw new ShoppingCartBusinessException(MessageConstant.UNKNOWN_ERROR);
             }

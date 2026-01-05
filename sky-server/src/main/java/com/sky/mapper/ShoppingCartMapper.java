@@ -1,8 +1,6 @@
 package com.sky.mapper;
-import java.math.BigDecimal;
 import java.util.List;
 
-import com.sky.annotation.AutoFill;
 import org.apache.ibatis.annotations.Param;
 import com.sky.entity.ShoppingCart;
 
@@ -36,7 +34,7 @@ public interface ShoppingCartMapper {
      * @param id
      * @return
      */
-    void delete(@Param("id")Long id);
+    void deleteById(@Param("id")Long id);
 
     void deleteByUserId(@Param("userId")Long userId);
 
