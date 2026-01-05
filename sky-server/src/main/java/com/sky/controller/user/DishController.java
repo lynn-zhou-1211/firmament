@@ -40,6 +40,7 @@ public class DishController {
     @GetMapping("/list")
     @ApiOperation("根据分类 id 查询菜品")
     public Result<List<DishVO>> list(Long categoryId) {
+        log.info("根据分类查询套餐列表：{}",categoryId);
         String key = "dish_" + categoryId;
 
         // 1. 查询 Redis

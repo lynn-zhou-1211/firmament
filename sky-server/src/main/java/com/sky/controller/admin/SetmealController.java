@@ -5,6 +5,7 @@ import com.sky.dto.SetmealPageQueryDTO;
 import com.sky.result.PageResult;
 import com.sky.result.Result;
 import com.sky.service.SetmealService;
+import com.sky.utils.RedisUtil;
 import com.sky.vo.SetmealVO;
 import io.lettuce.core.api.push.PushListener;
 import io.swagger.annotations.Api;
@@ -25,51 +26,58 @@ public class SetmealController {
     @Autowired
     private SetmealService setmealService;
 
+    @Autowired
+    private RedisUtil redisUtil;
+
     @PostMapping
     @ApiOperation("Setmeal create")
-    public Result save(@RequestBody SetmealDTO setmealDTO){
-        log.info("新增菜品：{}",setmealDTO);
+    public Result save(@RequestBody SetmealDTO setmealDTO) {
+        log.info("新增菜品：{}", setmealDTO);
         setmealService.saveSetmealWithDishes(setmealDTO);
+        redisUtil.delete("setmeal_" + setmealDTO.getCategoryId());
         return Result.success();
     }
 
     @GetMapping("/page")
     @ApiOperation("Setmeal Page Query")
-    public Result<PageResult> page(SetmealPageQueryDTO setmealPageQueryDTO){
-        log.info("套餐分页查询：{}",setmealPageQueryDTO);
+    public Result<PageResult> page(SetmealPageQueryDTO setmealPageQueryDTO) {
+        log.info("套餐分页查询：{}", setmealPageQueryDTO);
         PageResult pageResult = setmealService.pageQuery(setmealPageQueryDTO);
         return Result.success(pageResult);
     }
 
     @DeleteMapping
     @ApiOperation("Setmeal batch delete")
-    public Result delete(@RequestParam List<Long> ids){
-        log.info("套餐批量删除：{}",ids);
+    public Result delete(@RequestParam List<Long> ids) {
+        log.info("套餐批量删除：{}", ids);
         setmealService.deleteBatch(ids);
+        redisUtil.deleteByPattern("setmeal_*");
         return Result.success();
     }
 
     @GetMapping("/{id}")
     @ApiOperation("Setmeal query by id")
-    public Result<SetmealVO> getById(@PathVariable Long id){
-        log.info("根据 id 查询套餐：{}",id);
+    public Result<SetmealVO> getById(@PathVariable Long id) {
+        log.info("根据 id 查询套餐：{}", id);
         SetmealVO setmealVO = setmealService.queryByIdWithCategoryNameAndSetmealDishes(id);
         return Result.success(setmealVO);
     }
 
     @PutMapping("/{id}")
     @ApiOperation("Setmeal update")
-    public Result update(@RequestBody SetmealDTO setmealDTO){
-        log.info("套餐修改：{}",setmealDTO);
+    public Result update(@RequestBody SetmealDTO setmealDTO) {
+        log.info("套餐修改：{}", setmealDTO);
         setmealService.update(setmealDTO);
+        redisUtil.deleteByPattern("setmeal_*");
         return Result.success();
     }
 
     @PostMapping("/status/{status}")
     @ApiOperation("Setmeal stutus upsate")
-    public Result startOrStop(@PathVariable Integer status,@RequestParam Long id){
-        log.info("修改套餐{}状态：{}",id,status);
-        setmealService.startOrStop(id,status);
+    public Result startOrStop(@PathVariable Integer status, @RequestParam Long id) {
+        log.info("修改套餐{}状态：{}", id, status);
+        setmealService.startOrStop(id, status);
+        redisUtil.deleteByPattern("setmeal_*");
         return Result.success();
     }
 
