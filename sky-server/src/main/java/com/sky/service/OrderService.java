@@ -36,21 +36,60 @@ public interface OrderService {
      */
     PageResult conditionSearch(OrdersPageQueryDTO ordersPageQueryDTO);
 
+    /**
+     * 不同状态的订单数量查询
+     * @return
+     */
     OrderStatisticsVO statistics();
 
+    /**
+     * 确认接单
+     * @param ordersConfirmDTO
+     */
     void confirm(OrdersConfirmDTO ordersConfirmDTO);
 
+    /**
+     * 拒绝订单
+     * @param ordersRejectionDTO
+     */
     void rejection(OrdersRejectionDTO ordersRejectionDTO);
 
+    /**
+     * 取消订单
+     * @param ordersCancelDTO
+     */
     void cancel(OrdersCancelDTO ordersCancelDTO);
 
+    /**
+     * 派送订单
+     * @param id
+     */
     void delivery(Long id);
 
+    /**
+     * 完成订单
+     * @param id
+     */
     void complete(Long id);
 
+    /**
+     * 用户端订单查询
+     * @param pageNum
+     * @param pageSize
+     * @param status
+     * @return
+     */
     PageResult pageQuery4User(int pageNum, int pageSize, Integer status);
 
+    /**
+     * 用户端取消订单
+     * @param id
+     */
     void userCancelById(Long id);
 
+    /**
+     * 重复下单
+     * @param id
+     */
     void repetition(Long id);
 }
