@@ -58,7 +58,7 @@ public class OrderController {
      */
     @GetMapping("/historyOrders")
     @ApiOperation("Order history")
-    public Result<PageResult> page(int pageNum, int pageSize, Integer status) {
+    public Result<PageResult> page(@RequestParam(name = "page")int pageNum, int pageSize, Integer status) {
         PageResult pageResult = orderService.pageQuery4User(pageNum, pageSize, status);
         return Result.success(pageResult);
     }
