@@ -36,9 +36,18 @@ public interface ShoppingCartMapper {
      */
     void deleteById(@Param("id")Long id);
 
+    /**
+     * 根据用户id 删除
+     * @param userId
+     */
     void deleteByUserId(@Param("userId")Long userId);
 
-
+    /**
+     * 批量插入购物车数据
+     *
+     * @param shoppingCartList
+     */
+    void insertBatch(@Param("shoppingCartList") List<ShoppingCart> shoppingCartList);
 
 
 
