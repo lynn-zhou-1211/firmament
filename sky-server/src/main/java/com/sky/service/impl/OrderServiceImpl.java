@@ -28,7 +28,6 @@ import com.sky.vo.OrderStatisticsVO;
 import com.sky.vo.OrderSubmitVO;
 import com.sky.vo.OrderVO;
 import lombok.extern.slf4j.Slf4j;
-import org.checkerframework.checker.nullness.compatqual.NonNullDecl;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -63,6 +62,9 @@ public class OrderServiceImpl implements OrderService {
 
     @Autowired
     AddressBookMapper addressBookMapper;
+
+    @Autowired
+    private com.sky.websocket.WebSocketServer webSocketServer;
 
     // ================ 用户端 =======================
 
@@ -164,6 +166,15 @@ public class OrderServiceImpl implements OrderService {
 
         // 3. 更新数据库
         orderMapper.update(orders);
+
+        // new: 订单支付成功后，群发消息给商家，通知商家有新订单了
+        Map map = new HashMap();
+        map.put("type", 1); // 1表示来单提醒 2表示客户催单
+        map.put("orderId", ordersDB.getId());
+        map.put("content", "订单号：" + orderNumber);
+
+        String json = JSON.toJSONString(map); // 转成JSON字符串
+        webSocketServer.sendToAllClient(json); // 群发给商家
 
         // 4. 返回一个空的VO对象给前端，因为前端已经改了不处理签名，所以这里返回空即可
         OrderPaymentVO vo = new OrderPaymentVO();
@@ -522,5 +533,26 @@ public class OrderServiceImpl implements OrderService {
             throw new OrderBusinessException("超出配送范围，当前配送距离为" + distance + "米");
         }
         log.info("距离校验通过，当前配送距离为" + distance + "米");
+    }
+
+    /**
+     * 用户端催单
+     * @param id
+     */
+    public void reminder(Long id) {
+        // 1. 校验订单是否存在
+        Orders ordersDB = orderMapper.getById(id);
+        if (ordersDB == null) {
+            throw new OrderBusinessException(MessageConstant.ORDER_NOT_FOUND);
+        }
+
+        // 2. 构建 WebSocket 消息
+        Map map = new HashMap();
+        map.put("type", 2); // 2代表用户催单
+        map.put("orderId", id);
+        map.put("content", "订单号：" + ordersDB.getNumber());
+
+        // 3. 推送消息
+        webSocketServer.sendToAllClient(JSON.toJSONString(map));
     }
 }
