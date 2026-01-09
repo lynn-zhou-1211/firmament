@@ -1,5 +1,6 @@
 package com.sky.mapper;
 import java.util.List;
+import java.util.Map;
 
 import com.github.pagehelper.Page;
 import com.sky.annotation.AutoFill;
@@ -28,4 +29,11 @@ public interface DishMapper {
     void update(Dish dish);
 
     List<Dish> list(Dish dish);
+
+    /**
+     * 根据条件统计菜品数量
+     * @param map
+     * @return
+     */
+    Integer countByMap(Map map);
 }
