@@ -73,4 +73,5 @@ public interface OrderMapper {
      * @param map 包含 beginTime, endTime, status
      */
     Double sumByMap(Map map);
+
 }
