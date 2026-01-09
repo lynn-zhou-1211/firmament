@@ -521,6 +521,6 @@ public class OrderServiceImpl implements OrderService {
             //配送距离超过5000米
             throw new OrderBusinessException("超出配送范围，当前配送距离为" + distance + "米");
         }
-        log.debug("距离校验通过，当前配送距离为" + distance + "米");
+        log.info("距离校验通过，当前配送距离为" + distance + "米");
     }
 }

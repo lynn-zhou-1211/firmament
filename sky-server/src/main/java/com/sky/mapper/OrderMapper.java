@@ -8,6 +8,9 @@ import com.sky.entity.Orders;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Select;
 
+import java.time.LocalDateTime;
+import java.util.List;
+
 @Mapper
 public interface OrderMapper {
 
@@ -56,5 +59,10 @@ public interface OrderMapper {
     Integer countStatus(Integer status);
 
 
-
-}
+    /**
+     * 根据状态和下单时间查询订单
+     * @param status 订单状态
+     * @param orderTime 下单时间
+     */
+    @Select("select * from orders where status = #{status} and order_time < #{orderTime}")
+    List<Orders> getByStatusAndOrderTimeLT(@Param("status") Integer status,@Param("orderTime") LocalDateTime orderTime);}
