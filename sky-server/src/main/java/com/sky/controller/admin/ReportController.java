@@ -1,9 +1,13 @@
 package com.sky.controller.admin;
 
+import com.sky.entity.Orders;
+import com.sky.mapper.OrderMapper;
 import com.sky.result.Result;
 import com.sky.service.ReportService;
+import com.sky.vo.OrderReportVO;
 import com.sky.vo.TurnoverReportVO;
 import com.sky.vo.UserReportVO;
+import com.sun.deploy.util.StringUtils;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
@@ -13,6 +17,12 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/admin/report")
@@ -56,4 +66,22 @@ public class ReportController {
         UserReportVO userReportVO = reportService.getUserStatistics(begin, end);
         return Result.success(userReportVO);
     }
+
+    /**
+     * 订单统计
+     * @param begin
+     * @param end
+     * @return
+     */
+    @GetMapping("/ordersStatistics")
+    @ApiOperation("订单统计")
+    public Result<OrderReportVO> ordersStatistics(
+            @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate begin,
+            @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate end){
+
+        log.info("订单数据统计：{} - {}", begin, end);
+        OrderReportVO orderReportVO = reportService.getOrderStatistics(begin, end);
+        return Result.success(orderReportVO);
+    }
+
 }
